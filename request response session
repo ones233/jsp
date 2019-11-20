@@ -1,0 +1,62 @@
+1.request:
+
+index.jsp:
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<%
+    String welcome="第一次访问";
+    String [] info=new String[]{"","",""};
+    Cookie[] cook=request.getCookies();
+    if(cook!=null){
+        for (int i=0;i<cook.length;i++){
+            if(cook[i].getName().endsWith("myCookInfo")){
+                info=cook[i].getValue().split("#");
+                welcome=",欢迎回来!";
+            }
+        }
+    }
+%>
+
+<%=info[0]+welcome%>
+<form action="show.jsp" method="post">
+    姓名:<input type="text" name="name" value="<%=info[0]%>"><br>
+    出生日期<input type="text" name="birthday" value="<%=info[1]%>"><br>
+    邮箱地址<input type="text" name="mail" value="<%=info[2]%>"><br>
+    <input type="submit" value="提交">
+</form>
+    
+</body>
+</html>
+
+show.jsp:
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+
+<%
+    String name=request.getParameter("name");
+    String birthday=request.getParameter("birthday");
+    String mail=request.getParameter("mail");
+    Cookie myCook= new Cookie("myCookInfo",name+"#"+birthday+"#"+mail);
+    response.addCookie(myCook);
+%>
+
+2.response.sendReadirect("http://...（网页界面）");
+直接跳转到另一个网页界面
+
+3.response.setHeader("refresh","5");
+每五秒自动刷新一次
+
+4.response.setHeader("refresh","5；URL=xxx.jsp");
+五秒之后自动跳转到指定界面
+
+5.session对象用来存储多个界面共有的数据
+
+
